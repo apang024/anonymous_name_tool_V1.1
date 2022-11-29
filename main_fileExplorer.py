@@ -30,6 +30,7 @@ file_name = os.path.basename(file_path).split('/')[-1]
 names = []
 firstName = []
 lastName = []
+hashAvail = []
 netID = []
 output = []
 
@@ -39,6 +40,7 @@ with open('names_1.txt') as f:
         names.append(line)
         firstName.append(line.split()[0])
         lastName.append(line.split()[1])
+        hashAvail.append(1)
 
 # Read csv file
 df = pd.read_csv(file_path)
@@ -52,8 +54,17 @@ df.columns = df.columns.str.replace('content_resource_id', 'lab_id')
 
 # Extract userIDs
 for i, row in enumerate(df.itertuples()):
+    # Check uniquness of the user_id since they are hashed
+    isUnique = 0
+    hashedUserID = row.user_id  % len(firstName)
+    if (hashAvail[hashedUserID]):
+        isUnique = 1
+    else:
+        print('Multiple rows may have the same name. Please use a larger set of names')
+    
+    # FIXME: use isUnique to rehash until unique
+
     # Update original log file
-    hashedUserID = row.user_id  % 2345958
     df.iat[i,5] = firstName[hashedUserID]
     df.iat[i,6] = lastName[hashedUserID]
     # Keep an array of ids and names
