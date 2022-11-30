@@ -67,8 +67,10 @@ for i, row in enumerate(df.itertuples()):
     # Update original log file
     df.iat[i,5] = firstName[hashedUserID]
     df.iat[i,6] = lastName[hashedUserID]
-    # Keep an array of ids and names
-    output.append(str(hashedUserID) + ' ' + firstName[hashedUserID] + ' ' + lastName[hashedUserID])
+    df.iat[i,7] = firstName[hashedUserID] + '.' + lastName[hashedUserID] + '@fakeuniv.edu'
+
+    # # Keep an array of ids and names
+    # output.append(str(hashedUserID) + ' ' + firstName[hashedUserID] + ' ' + lastName[hashedUserID])
 
 print ('Your anonymized file was placed in the same folder as the given file.')
 df.to_csv(folder_path + '/anonymous_' + file_name, index=False)
